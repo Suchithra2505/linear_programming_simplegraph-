@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <title>LP Graph</title>
+</head>
+<body>
+
+<div id="graph"></div>
+
+<script>
+function plotLine(eq, x_range, color) {
+  const y_values = x_range.map(x => eq(x));
+  return {
+    x: x_range,
+    y: y_values,
+    type: 'scatter',
+    mode: 'lines',
+    line: { color: color }
+  };
+}
+
+// Constraints
+const constraint1 = x => -5 * x + 10;
+const constraint2 = x => -x + 6;
+const constraint3 = x => -(1/4) * x + 3;
+
+// Plot constraints
+const trace1 = plotLine(constraint1, [...Array(10).keys()], 'red');
+const trace2 = plotLine(constraint2, [...Array(10).keys()], 'green');
+const trace3 = plotLine(constraint3, [...Array(10).keys()], 'blue');
+
+// Plot feasible region
+const trace4 = {
+  x: [0, 2, 4, 4, 0],
+  y: [10, 8, 4, 12, 12],
+  type: 'scatter',
+  mode: 'lines+markers',
+  marker: { color: 'rgba(0,0,0,0)' },
+  line: { color: 'black' }
+};
+
+// Create layout
+const layout = {
+  title: 'LP Graph',
+  xaxis: { title: 'x1' },
+  yaxis: { title: 'x2' }
+};
+
+// Plotly data
+const data = [trace1, trace2, trace3, trace4];
+
+// Plot the graph
+Plotly.newPlot('graph', data, layout);
+</script>
+
+</body>
+</html>
